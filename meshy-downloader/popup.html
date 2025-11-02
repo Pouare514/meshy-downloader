@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="header-content">
+        <h1 class="title">Meshy Downloader</h1>
+        <p class="subtitle">Download your 3D models</p>
+      </div>
+    </div>
+
+    <div class="status-box" id="status">
+      <span class="status-icon">⏳</span>
+      <span class="status-text">Ready to fetch your models</span>
+    </div>
+
+    <button id="loadTasks" class="btn-primary">
+      <span class="btn-icon">📥</span>
+      <span class="btn-text">Fetch Models</span>
+    </button>
+
+    <div class="tasks-container" id="tasksContainer">
+      <div class="tasks-list" id="tasksList"></div>
+    </div>
+
+    <div class="footer">
+      <p class="footer-text">💡 Make sure you're signed into <strong>meshy.ai</strong> for automatic token detection</p>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
