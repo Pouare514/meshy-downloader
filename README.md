@@ -2,14 +2,14 @@
 
 <div align="center">
 
-![GitHub stars](https://img.shields.io/github/stars/Poure514/meshy-downloader?style=for-the-badge&logo=github&logoColor=white)
-![GitHub forks](https://img.shields.io/github/forks/Poure514/meshy-downloader?style=for-the-badge&logo=github&logoColor=white)
-![GitHub watchers](https://img.shields.io/github/watchers/Poure514/meshy-downloader?style=for-the-badge&logo=github&logoColor=white)
-![GitHub issues](https://img.shields.io/github/issues/Poure514/meshy-downloader?style=for-the-badge&logo=github&logoColor=white)
+![GitHub stars](https://img.shields.io/github/stars/Pouare514/meshy-downloader?style=for-the-badge&logo=github&logoColor=white)
+![GitHub forks](https://img.shields.io/github/forks/Pouare514/meshy-downloader?style=for-the-badge&logo=github&logoColor=white)
+![GitHub watchers](https://img.shields.io/github/watchers/Pouare514/meshy-downloader?style=for-the-badge&logo=github&logoColor=white)
+![GitHub issues](https://img.shields.io/github/issues/Pouare514/meshy-downloader?style=for-the-badge&logo=github&logoColor=white)
 
-![GitHub last commit](https://img.shields.io/github/last-commit/Poure514/meshy-downloader?style=for-the-badge&logo=github&logoColor=white)
-![GitHub license](https://img.shields.io/github/license/Poure514/meshy-downloader?style=for-the-badge&logo=github&logoColor=white)
-![GitHub repo size](https://img.shields.io/github/repo-size/Poure514/meshy-downloader?style=for-the-badge&logo=github&logoColor=white)
+![GitHub last commit](https://img.shields.io/github/last-commit/Pouare514/meshy-downloader?style=for-the-badge&logo=github&logoColor=white)
+![GitHub license](https://img.shields.io/github/license/Pouare514/meshy-downloader?style=for-the-badge&logo=github&logoColor=white)
+![GitHub repo size](https://img.shields.io/github/repo-size/Pouare514/meshy-downloader?style=for-the-badge&logo=github&logoColor=white)
 
 </div>
 
@@ -33,7 +33,7 @@ A minimalist and elegant Chrome extension to easily download your 3D models from
 
 1. **Clone or download** this repository
    ```bash
-   git clone https://github.com/Poure514/meshy-downloader.git
+   git clone https://github.com/Pouare514/meshy-downloader.git
    cd meshy-downloader/meshy-downloader
    ```
 
@@ -180,7 +180,7 @@ This extension is a personal project not affiliated with Meshy.ai. Use it at you
 ## 📞 Support
 
 Encountering an issue?
-- 🐛 Open an [Issue](https://github.com/Poure514/meshy-downloader/issues)
+- 🐛 Open an [Issue](https://github.com/Pouare514/meshy-downloader/issues)
 - 💬 Leave a PR with a solution
 
 ---
