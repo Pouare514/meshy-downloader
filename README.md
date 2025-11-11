@@ -1,5 +1,18 @@
 # 🎨 Meshy Downloader - Chrome Extension
 
+<div align="center">
+
+![GitHub stars](https://img.shields.io/github/stars/Poure514/meshy-downloader?style=for-the-badge&logo=github&logoColor=white)
+![GitHub forks](https://img.shields.io/github/forks/Poure514/meshy-downloader?style=for-the-badge&logo=github&logoColor=white)
+![GitHub watchers](https://img.shields.io/github/watchers/Poure514/meshy-downloader?style=for-the-badge&logo=github&logoColor=white)
+![GitHub issues](https://img.shields.io/github/issues/Poure514/meshy-downloader?style=for-the-badge&logo=github&logoColor=white)
+
+![GitHub last commit](https://img.shields.io/github/last-commit/Poure514/meshy-downloader?style=for-the-badge&logo=github&logoColor=white)
+![GitHub license](https://img.shields.io/github/license/Poure514/meshy-downloader?style=for-the-badge&logo=github&logoColor=white)
+![GitHub repo size](https://img.shields.io/github/repo-size/Poure514/meshy-downloader?style=for-the-badge&logo=github&logoColor=white)
+
+</div>
+
 A minimalist and elegant Chrome extension to easily download your 3D models from **Meshy.ai**.
 
 ## ✨ Features
