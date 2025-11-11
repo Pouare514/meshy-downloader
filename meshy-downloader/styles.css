@@ -153,9 +153,16 @@ body {
 
 .task-header {
   display: flex;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  gap: 12px;
+}
+
+.task-header-content {
+  display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  flex: 1;
   gap: 12px;
 }
 
@@ -213,6 +220,17 @@ body {
   color: var(--text);
   font-family: 'Monaco', 'Courier', monospace;
   font-size: 12px;
+  word-break: break-word;
+}
+
+.task-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+  background: var(--bg);
 }
 
 .task-id {
@@ -245,6 +263,12 @@ body {
   margin-top: 10px;
 }
 
+.task-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
 .download-btn,
 .btn-download {
   padding: 8px 14px;
@@ -263,6 +287,36 @@ body {
   align-items: center;
   justify-content: center;
   gap: 6px;
+}
+
+.btn-download-texture {
+  padding: 8px 14px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-download-texture:hover {
+  background: var(--primary-dark);
+  box-shadow: 0 4px 8px rgba(99, 102, 241, 0.25);
+}
+
+.btn-download-texture:disabled {
+  background: #d1d5db;
+  box-shadow: none;
+  cursor: not-allowed;
 }
 
 .download-btn:hover,

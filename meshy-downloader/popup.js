@@ -29,10 +29,20 @@ async function loadTasks() {
         
         const statusClass = task.status.toLowerCase();
         
+        const imageDisplay = task.imageUrl ? `<img src="${task.imageUrl}" alt="Preview" class="task-image" />` : '';
+        
+        // Utiliser le prompt comme titre s'il fait moins de 25 caractères
+        const displayTitle = (task.prompt && task.prompt.length < 25) 
+          ? task.prompt 
+          : (task.title || 'Untitled Model');
+        
         taskEl.innerHTML = `
           <div class="task-header">
-            <div class="task-title">${task.title || 'Untitled Model'}</div>
-            <span class="status-badge ${statusClass}">${task.status}</span>
+            ${imageDisplay}
+            <div class="task-header-content">
+              <div class="task-title">${displayTitle}</div>
+              <span class="status-badge ${statusClass}">${task.status}</span>
+            </div>
           </div>
           <div class="task-meta">
             <div class="meta-item">
@@ -44,10 +54,16 @@ async function loadTasks() {
               <span class="meta-value">${date}</span>
             </div>
           </div>
-          <button class="btn-download" data-id="${task.id}" data-url="${task.modelUrl}" data-filename="meshy_${task.id}.glb">
-            <span class="download-icon">⬇️</span>
-            <span class="download-text">Download</span>
-          </button>
+          <div class="task-actions">
+            <button class="btn-download" data-id="${task.id}" data-url="${task.modelUrl}" data-filename="meshy_${task.id}.glb">
+              <span class="download-icon">⬇️</span>
+              <span class="download-text">Download Model</span>
+            </button>
+            ${task.textureUrl ? `<button class="btn-download-texture" data-id="${task.id}" data-url="${task.textureUrl}" data-filename="meshy_${task.id}_texture.png">
+              <span class="download-icon">🖼️</span>
+              <span class="download-text">Download Texture</span>
+            </button>` : ''}
+          </div>
         `;
         
         tasksList.appendChild(taskEl);
@@ -63,6 +79,24 @@ async function loadTasks() {
             action: 'downloadModel',
             taskId: taskId,
             modelUrl: modelUrl,
+            filename: filename
+          });
+          
+          btn.innerHTML = '<span class="download-icon">✓</span><span class="download-text">Downloading...</span>';
+          btn.disabled = true;
+        });
+      });
+      
+      document.querySelectorAll('.btn-download-texture').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const taskId = btn.dataset.id;
+          const textureUrl = btn.dataset.url;
+          const filename = btn.dataset.filename;
+          
+          chrome.runtime.sendMessage({
+            action: 'downloadTexture',
+            taskId: taskId,
+            textureUrl: textureUrl,
             filename: filename
           });
           

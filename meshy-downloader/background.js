@@ -20,6 +20,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'downloadModel') {
     downloadModel(request.taskId, request.modelUrl, request.filename);
   }
+  
+  if (request.action === 'downloadTexture') {
+    downloadTexture(request.taskId, request.textureUrl, request.filename);
+  }
 });
 
 // Récupérer les tâches de l'utilisateur
@@ -92,8 +96,11 @@ async function getTasks() {
           id: task.id,
           title: task.prompt || task.name || 'Sans titre',
           status: task.status,
-          modelUrl: task.model_url || task.modelUrl || task.result?.generate?.modelUrl || task.generate?.modelUrl,
-          createdAt: task.created_at || task.createdAt
+          modelUrl: task.model_url || task.modelUrl || task.result?.generate?.modelUrl || task.generate?.modelUrl || task.result?.texture?.modelUrl,
+          createdAt: task.created_at || task.createdAt,
+          prompt: task.args?.draft?.prompt || task.args?.texture?.prompt || task.prompt || '',
+          imageUrl: task.result?.previewUrl || '',
+          textureUrl: task.result?.texture?.textureUrls?.[0]?.colorMapUrl || ''
         })).filter(task => task.modelUrl)
           .sort((a, b) => {
             // Trier par date décroissante (plus récent en premier)
@@ -117,6 +124,15 @@ function downloadModel(taskId, modelUrl, filename) {
   chrome.downloads.download({
     url: modelUrl,
     filename: `meshy_models/${filename || taskId}.glb`,
+    saveAs: true
+  });
+}
+
+// Télécharger la texture
+function downloadTexture(taskId, textureUrl, filename) {
+  chrome.downloads.download({
+    url: textureUrl,
+    filename: `meshy_models/${filename || taskId}_texture.png`,
     saveAs: true
   });
 }

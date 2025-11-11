@@ -6,7 +6,10 @@ A minimalist and elegant Chrome extension to easily download your 3D models from
 
 - 🚀 **Automatic token extraction** - Instant detection of your Meshy.ai session
 - 📋 **Display your models** - View all your projects at a glance
+- 🖼️ **Preview images** - See thumbnail previews of your 3D models
 - ⬇️ **Direct download** - Get your .glb models with one click
+- 🎨 **Texture download** - Download texture files separately when available
+- 📝 **Smart titles** - Prompts automatically used as titles when short (< 25 chars)
 - 📅 **Sort by date** - Most recent models first
 - 🎯 **Clean and professional design** - Intuitive and polished interface
 - ⚡ **Lightweight and fast** - No external dependencies
@@ -34,10 +37,12 @@ A minimalist and elegant Chrome extension to easily download your 3D models from
 1. **Sign in** to [meshy.ai](https://meshy.ai) in Chrome
 2. **Click** the extension icon
 3. **Press** the "Fetch Models" button 📥
-4. **Watch** your models display automatically
-5. **Download** by clicking the ⬇️ Download button
+4. **Watch** your models display automatically with preview images
+5. **Download** by clicking:
+   - ⬇️ **Download Model** button for the .glb file
+   - 🖼️ **Download Texture** button for the texture PNG (when available)
 
-Models are saved to your `Downloads/meshy_models/` folder
+Models and textures are saved to your `Downloads/meshy_models/` folder
 
 ## 🏗️ Architecture
 
@@ -91,16 +96,26 @@ The extension automatically detects your session by reading Meshy.ai's Supabase 
 ### Model Retrieval
 Direct connection to Meshy API to retrieve:
 - Model ID
-- Project title/name
+- Project title/name (or prompt if < 25 characters)
+- Preview image URL
 - Creation date
 - Status (SUCCEEDED, PENDING, FAILED)
-- Download URL
+- Model download URL (.glb)
+- Texture download URL (.png) when available
 
 ### Smart Sorting
 Models are automatically sorted by creation date (most recent first) for optimal browsing.
 
 ### Download Management
-Each model is saved with its unique ID to avoid name conflicts.
+- Models are saved with their unique ID to avoid name conflicts
+- Textures are saved as `{modelId}_texture.png`
+- Both files are organized in the `meshy_models/` folder
+
+### Smart Title Display
+When a prompt is short (less than 25 characters), it automatically replaces the default title for better readability. For example, "Rei ayanami" will be displayed as the title instead of "Untitled Model".
+
+### Preview Images
+Each model card displays a thumbnail preview (80x80px) extracted from the Meshy API, making it easy to identify your models at a glance.
 
 ## 🐛 Troubleshooting
 
@@ -126,12 +141,14 @@ Each model is saved with its unique ID to avoid name conflicts.
 
 ## 📈 Roadmap
 
-- [ ] Téléchargement en batch
-- [ ] 3D model preview
+- [x] Preview images
+- [x] Texture download
+- [x] Smart title from prompts
 - [ ] Batch downloads
 - [ ] Download history
 - [ ] Custom settings
 - [ ] Format support (GLB, USD, etc.)
+- [ ] 3D model preview in extension
 
 ## 📄 License
 
