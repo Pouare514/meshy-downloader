@@ -145,10 +145,7 @@ Each model card displays a thumbnail preview (80x80px) extracted from the Meshy 
 - [x] Texture download
 - [x] Smart title from prompts
 - [ ] Batch downloads
-- [ ] Download history
-- [ ] Custom settings
 - [ ] Format support (GLB, USD, etc.)
-- [ ] 3D model preview in extension
 
 ## 📄 License
 

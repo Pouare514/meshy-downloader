@@ -12,7 +12,8 @@
   "host_permissions": [
     "https://api.meshy.ai/*",
     "https://meshy.ai/*",
-    "https://www.meshy.ai/*"
+    "https://www.meshy.ai/*",
+    "https://assets.meshy.ai/*"
   ],
   "background": {
     "service_worker": "background.js"

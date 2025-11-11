@@ -4,7 +4,6 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'saveToken') {
     chrome.storage.local.set({ meshy_token: request.token });
-    console.log('✓ Token sauvegardé:', request.token.substring(0, 20) + '...');
   }
   
   if (request.action === 'getTasks') {
@@ -33,12 +32,9 @@ async function getTasks() {
       const token = result.meshy_token;
       
       if (!token) {
-        console.error('❌ Token non trouvé dans le stockage');
         reject(new Error('Token non trouvé. Assure-toi d\'être sur meshy.ai et d\'attendre le chargement complet.'));
         return;
       }
-      
-      console.log('✓ Token trouvé, tentative de récupération des tâches...');
       
       try {
         // Récupérer les tâches
@@ -50,18 +46,11 @@ async function getTasks() {
           }
         });
         
-        console.log('Réponse API:', response.status, response.statusText);
-        
         if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}));
-          console.error('Erreur API:', errorData);
           throw new Error(`Erreur API: ${response.status} - ${response.statusText}`);
         }
         
         const data = await response.json();
-        console.log('Données reçues (structure):', typeof data, Array.isArray(data) ? 'array' : 'object');
-        console.log('Données reçues (keys):', Object.keys(data || {}));
-        console.log('Données reçues (first 200 chars):', JSON.stringify(data).substring(0, 200));
         
         // Extraire les tâches avec leurs modelUrl
         // L'API peut retourner plusieurs formats
@@ -84,24 +73,29 @@ async function getTasks() {
           tasksList = data.tasks;
         }
         
-        console.log('Tasks list trouvée:', tasksList.length, 'tâches');
-        
         if (!Array.isArray(tasksList)) {
-          console.error('Structure inattendue, pas de tableau trouvé');
-          console.log('Structure complète:', JSON.stringify(data).substring(0, 500));
           throw new Error('Structure de réponse API inattendue');
         }
         
-        const tasks = tasksList.map(task => ({
-          id: task.id,
-          title: task.prompt || task.name || 'Sans titre',
-          status: task.status,
-          modelUrl: task.model_url || task.modelUrl || task.result?.generate?.modelUrl || task.generate?.modelUrl || task.result?.texture?.modelUrl,
-          createdAt: task.created_at || task.createdAt,
-          prompt: task.args?.draft?.prompt || task.args?.texture?.prompt || task.prompt || '',
-          imageUrl: task.result?.previewUrl || '',
-          textureUrl: task.result?.texture?.textureUrls?.[0]?.colorMapUrl || ''
-        })).filter(task => task.modelUrl)
+        const tasks = await Promise.all(tasksList.map(async (task) => {
+          const baseTask = {
+            id: task.id,
+            title: task.prompt || task.name || 'Sans titre',
+            status: task.status,
+            modelUrl: task.model_url || task.modelUrl || task.result?.generate?.modelUrl || task.generate?.modelUrl || task.result?.texture?.modelUrl,
+            createdAt: task.created_at || task.createdAt,
+            prompt: task.args?.draft?.prompt || task.args?.texture?.prompt || task.prompt || '',
+            imageUrl: task.result?.previewUrl || '',
+            textureUrl: task.result?.texture?.textureUrls?.[0]?.colorMapUrl || '',
+            quadJsonUrl: task.result?.texture?.quadJsonUrl || task.result?.generate?.quadJsonUrl || ''
+          };
+          
+          // Les stats seront récupérées depuis le popup pour éviter les problèmes CORS
+          
+          return baseTask;
+        }));
+        
+        const filteredTasks = tasks.filter(task => task.modelUrl)
           .sort((a, b) => {
             // Trier par date décroissante (plus récent en premier)
             const dateA = new Date(a.createdAt).getTime();
@@ -109,10 +103,8 @@ async function getTasks() {
             return dateB - dateA;
           });
         
-        console.log(`✓ ${tasks.length} tâche(s) avec modèle trouvée(s)`);
-        resolve(tasks);
+        resolve(filteredTasks);
       } catch (error) {
-        console.error('Erreur lors de la récupération des tâches:', error);
         reject(error);
       }
     });
