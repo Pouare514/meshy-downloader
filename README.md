@@ -2,8 +2,6 @@
 
 <div align="center">
 
-![Meshy Downloader Hero](file:///C:/Users/pouar/.gemini/antigravity/brain/4d6e3f37-c49b-494f-9574-78b33fc56f75/meshy_downloader_hero_1778498214554.png)
-
 [![GitHub stars](https://img.shields.io/github/stars/Pouare514/meshy-downloader?style=for-the-badge&color=7c3aed&logo=github)](https://github.com/Pouare514/meshy-downloader/stargazers)
 [![GitHub license](https://img.shields.io/github/license/Pouare514/meshy-downloader?style=for-the-badge&color=7c3aed)](https://github.com/Pouare514/meshy-downloader/blob/main/LICENSE)
 [![Chrome Extension](https://img.shields.io/badge/Chrome-Extension-informational?style=for-the-badge&logo=google-chrome&color=7c3aed)](https://chrome.google.com/webstore)
