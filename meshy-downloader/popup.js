@@ -2,6 +2,26 @@
 
 document.getElementById('loadTasks').addEventListener('click', loadTasks);
 
+// Listen for decrypt status updates from content script
+chrome.runtime.onMessage.addListener((request) => {
+  if (request.action === 'decryptStatus') {
+    const btn = document.querySelector(`.btn-download[data-id="${request.requestId}"]`);
+    if (!btn) return;
+
+    if (request.status === 'fetching') {
+      btn.innerHTML = '<span class="download-icon">📥</span><span class="download-text">Fetching...</span>';
+    } else if (request.status === 'decrypting') {
+      btn.innerHTML = '<span class="download-icon">🔓</span><span class="download-text">Decrypting...</span>';
+    } else if (request.status === 'done') {
+      btn.innerHTML = '<span class="download-icon">✅</span><span class="download-text">Done!</span>';
+    } else if (request.status === 'error') {
+      btn.innerHTML = '<span class="download-icon">❌</span><span class="download-text">Error</span>';
+      btn.title = request.error;
+      btn.disabled = false;
+    }
+  }
+});
+
 async function loadTasks() {
   const statusDiv = document.getElementById('status');
   const tasksList = document.getElementById('tasksList');
@@ -17,22 +37,7 @@ async function loadTasks() {
       statusDiv.innerHTML = `<span class="status-icon">✓</span><span class="status-text">${response.tasks.length} model(s) found</span>`;
       statusDiv.classList.add('success');
 
-      const tasksWithStats = await Promise.all(response.tasks.map(async (task) => {
-        if (task.quadJsonUrl) {
-          try {
-            const quadResponse = await fetch(task.quadJsonUrl);
-            if (quadResponse.ok) {
-              const quadData = await quadResponse.json();
-              task.vertsCount = quadData.verts_count || 0;
-              task.facesCount = quadData.faces_count || 0;
-            }
-          } catch (error) {
-          }
-        }
-        return task;
-      }));
-
-      displayTasks(tasksWithStats, tasksList);
+      displayTasks(response.tasks, tasksList);
 
     } else {
       statusDiv.innerHTML = `<span class="status-icon">❌</span><span class="status-text">${response.error || 'No models found'}</span>`;
@@ -61,12 +66,19 @@ function displayTasks(tasks, tasksList) {
       : (task.title || 'Untitled Model');
     const formatNumber = (num) => num ? num.toLocaleString('en-US') : '';
 
-    const polyInfo = (task.facesCount || task.vertsCount)
+    const polyInfo = (task.faceCount || task.vertexCount || task.triangleCount)
       ? `<div class="meta-item">
           <span class="meta-label">Polygons:</span>
-          <span class="meta-value">${task.facesCount ? formatNumber(task.facesCount) + ' faces' : ''}${task.facesCount && task.vertsCount ? ', ' : ''}${task.vertsCount ? formatNumber(task.vertsCount) + ' vertices' : ''}</span>
+          <span class="meta-value">${task.faceCount ? formatNumber(task.faceCount) + ' faces' : ''}${task.faceCount && task.vertexCount ? ', ' : ''}${task.vertexCount ? formatNumber(task.vertexCount) + ' vertices' : ''}</span>
         </div>`
       : '';
+
+    const isMeshy = task.modelUrl.includes('.meshy');
+    const downloadLabel = isMeshy ? 'Download GLB' : 'Download Model';
+    const downloadFilename = isMeshy ? `meshy_${task.id}.glb` : `meshy_${task.id}.glb`;
+
+    const textureCount = task.textures ? Object.values(task.textures).filter(u => u).length : 0;
+    const hasTextures = textureCount > 0;
 
     taskEl.innerHTML = `
       <div class="task-header">
@@ -88,13 +100,13 @@ function displayTasks(tasks, tasksList) {
         </div>
       </div>
       <div class="task-actions">
-        <button class="btn-download" data-id="${task.id}" data-url="${task.modelUrl}" data-filename="meshy_${task.id}.glb">
+        <button class="btn-download" data-id="${task.id}" data-url="${task.modelUrl}" data-filename="${downloadFilename}">
           <span class="download-icon">⬇️</span>
-          <span class="download-text">Download Model</span>
+          <span class="download-text">${downloadLabel}</span>
         </button>
-        ${task.textureUrl ? `<button class="btn-download-texture" data-id="${task.id}" data-url="${task.textureUrl}" data-filename="meshy_${task.id}_texture.png">
+        ${hasTextures ? `<button class="btn-download-texture" data-id="${task.id}" data-textures='${JSON.stringify(task.textures)}' data-taskname="${displayTitle}">
           <span class="download-icon">🖼️</span>
-          <span class="download-text">Download Texture</span>
+          <span class="download-text">Download Textures (${textureCount})</span>
         </button>` : ''}
       </div>
     `;
@@ -102,7 +114,7 @@ function displayTasks(tasks, tasksList) {
     tasksList.appendChild(taskEl);
   });
 
-  // Ajouter les event listeners pour les boutons
+  // Download model buttons
   document.querySelectorAll('.btn-download').forEach(btn => {
     btn.addEventListener('click', () => {
       const taskId = btn.dataset.id;
@@ -116,22 +128,23 @@ function displayTasks(tasks, tasksList) {
         filename: filename
       });
 
-      btn.innerHTML = '<span class="download-icon">✓</span><span class="download-text">Downloading...</span>';
+      btn.innerHTML = '<span class="download-icon">⏳</span><span class="download-text">Starting...</span>';
       btn.disabled = true;
     });
   });
 
+  // Download all textures buttons
   document.querySelectorAll('.btn-download-texture').forEach(btn => {
     btn.addEventListener('click', () => {
       const taskId = btn.dataset.id;
-      const textureUrl = btn.dataset.url;
-      const filename = btn.dataset.filename;
+      const textures = JSON.parse(btn.dataset.textures);
+      const taskName = btn.dataset.taskname;
 
       chrome.runtime.sendMessage({
-        action: 'downloadTexture',
+        action: 'downloadAllTextures',
         taskId: taskId,
-        textureUrl: textureUrl,
-        filename: filename
+        textures: textures,
+        taskName: taskName
       });
 
       btn.innerHTML = '<span class="download-icon">✓</span><span class="download-text">Downloading...</span>';

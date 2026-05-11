@@ -20,8 +20,25 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://meshy.ai/*", "https://www.meshy.ai/*"],
-      "js": ["content.js"]
+      "matches": [
+        "https://meshy.ai/*",
+        "https://www.meshy.ai/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://meshy.ai/*",
+        "https://www.meshy.ai/*"
+      ],
+      "js": [
+        "main_world.js"
+      ],
+      "run_at": "document_start",
+      "world": "MAIN"
     }
   ],
   "action": {
