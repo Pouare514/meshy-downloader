@@ -3,7 +3,7 @@
 <div align="center">
 
 [![GitHub stars](https://img.shields.io/github/stars/Pouare514/meshy-downloader?style=for-the-badge&color=7c3aed&logo=github)](https://github.com/Pouare514/meshy-downloader/stargazers)
-[![GitHub license](https://img.shields.io/github/license/Pouare514/meshy-downloader?style=for-the-badge&color=7c3aed)](https://github.com/Pouare514/meshy-downloader/blob/main/LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-7c3aed?style=for-the-badge)](https://github.com/Pouare514/meshy-downloader/blob/main/LICENSE)
 [![Chrome Extension](https://img.shields.io/badge/Chrome-Extension-informational?style=for-the-badge&logo=google-chrome&color=7c3aed)](https://chrome.google.com/webstore)
 
 **The ultimate companion for Meshy.ai creators. Download your 3D models and textures with a single click.**
