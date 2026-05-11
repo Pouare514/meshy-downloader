@@ -79,6 +79,21 @@ graph TD
 
 ---
 
+## 🔄 Conversion .meshy → .glb
+
+Meshy.ai uses a proprietary `.meshy` format for its latest models. This extension includes a **Native Decryption Engine** that handles this format automatically.
+
+### How it works:
+1.  **Detection**: The extension identifies if a model is stored in the encrypted `.meshy` format.
+2.  **Native Bridge**: It securely interfaces with Meshy's own decryption worker (`loader-worker.js`) directly within your browser tab.
+3.  **Real-time Decryption**: The `.meshy` file is processed through the site's WASM module to reconstruct the original `.glb` data.
+4.  **Automatic Export**: The resulting GLB is then triggered as a standard download, ensuring you get the highest quality model compatible with Blender, Unity, and Unreal Engine.
+
+> [!NOTE]
+> This process happens entirely in your browser. No data is decrypted on external servers, ensuring your 3D models remain private.
+
+---
+
 ## 🔐 Security & Privacy
 
 We take your data seriously.
